@@ -1,0 +1,70 @@
+.navLeft-container{
+  width: 100%;
+  height: 100%;
+
+  .github {
+    position: absolute;
+    top: 20px;
+    left: 14px;
+    font-size: 36px;
+    animation: App-logo-spin infinite 20s linear;
+  }
+  .author {
+    position: absolute;
+    top: 20px;
+    left: 70px;
+    font-size: 24px;
+    font-weight: 600;
+    font-family: 'Microsoft YaHei', 'SimHei';
+  }
+  .white {
+    color: white;
+  }
+  .menu {
+    height: 100%;
+    padding-top: 75px;
+    box-sizing: border-box;
+  }
+  .switch {
+    position: absolute;
+    bottom: 8%;
+    right: 5%;
+  }
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+// .ant-layout-sider-collapsed .nav-text {
+//   display: none;
+// }
+
+.ant-menu-dark .ant-menu-inline.ant-menu-sub {
+  background: #333;
+  -webkit-box-shadow: 0 2px 8px rgba(0, 0, 0, 0.45) inset;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.45) inset;
+}
+
+.ant-menu-dark, .ant-menu-dark .ant-menu-sub {
+  color: rgba(255, 255, 255, 0.65);
+  background: #404040;
+}
+
+.ant-menu-submenu-vertical > .ant-menu-submenu-title:after {
+  // 对缩放时的menu样式进行处理
+  display: none;
+}
+
+.ant-menu-submenu-vertical .ant-menu-submenu-title span span {
+  display: none;
+}
+
+.ant-layout-sider-collapsed .author {
+  display: none;
+}
