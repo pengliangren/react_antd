@@ -18,7 +18,7 @@ class Home extends Component {
           <Cards />
         </div>
         <div>
-          5345345
+          
         </div>
       </Row>
     );

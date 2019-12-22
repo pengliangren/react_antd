@@ -30,7 +30,7 @@
 @fontF: 12px;
 @fontG: 20px;
 
-.clearfix{
+.clearfix {
   &:after {
     content: ".";
     display: block;
@@ -38,4 +38,26 @@
     clear: both;
     overflow: hidden;
   }
+}
+
+.ellipsis {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ellipsis-two {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.fl {
+  float: left;
+}
+
+.fr {
+  float: right;
 }
