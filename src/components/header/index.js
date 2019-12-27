@@ -32,7 +32,7 @@ class MainHeader extends Component {
       screenfull.toggle(); // 这个方法点击全屏，再次点击会变回来
     }
   }
-  render() { 
+  render() {
     return ( 
       <Header className="header">
         <Icon
@@ -50,6 +50,7 @@ class MainHeader extends Component {
             }
           >
             <Menu.Item>
+              {/* 这里加了一个replace 可以去掉警告 */}
               <Link to="/login">退出</Link>
             </Menu.Item>
           </SubMenu>

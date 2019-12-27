@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
 import { Row } from 'antd';
 import Cards from './card';
+import ProFinish from './proFinish'
+import BuildSiteLog from './buildSiteLog'
+import MsgBanner from './msgBanner'
+import AccessNum from './accessNum'
 
 import './index.less';
 
@@ -14,11 +18,14 @@ class Home extends Component {
   render() {
     return ( 
       <Row gutter={16}>
-        <div>
+        <div className="clearfix">
           <Cards />
+          <ProFinish />
         </div>
-        <div>
-          
+        <div className="clearfix">
+          <BuildSiteLog />
+          <MsgBanner className="message"/>
+          <AccessNum />
         </div>
       </Row>
     );

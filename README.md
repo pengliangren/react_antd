@@ -3,6 +3,90 @@
   react-loadable 可以实现代码分割， 减少首屏加载时间，打包之后分成多个代码块chunks
 - screenfull 可以实现全屏展示
 
+## immutable.js 的使用
+
+### Immutable.js 的几种数据类型
+- List: 有序索引集，类似JavaScript中的Array。
+- Map: 无序索引集，类似JavaScript中的Object。
+- OrderedMap: 有序的Map，根据数据的set()进行排序。
+- Set: 没有重复值的集合。
+- OrderedSet: 有序的Set，根据数据的add进行排序。
+- Stack: 有序集合，支持使用unshift()和shift()添加和删除。
+- Record: 一个用于生成Record实例的类。类似于JavaScript的Object，但是只接收特定字符串为key，具有默认值。
+- Seq: 序列，但是可能不能由具体的数据结构支持。
+- Collection: 是构建所有数据结构的基类，不可以直接构建。
+
+**用的最多就是List和Map，所以在这里主要介绍这两种数据类型的API。**
+
+### Immutable.js 的常用API [参考文档](https://www.jianshu.com/p/0fa8c7456c15)
+
+### fromJS()
+作用：将一个js数据转换为Immutable类型的数据
+
+用法：fromJS(value, converter)
+
+简介：value是要转变的数据，converter是要做的操作。第二个参数可不填，默认情况会将数组准换为List类型，将对象转换为Map类型，其余不做操作
+```
+const obj = Immutable.fromJS({a:'123',b:'234'},function (key, value, path) {
+    console.log(key, value, path)
+    return isIndexed(value) ? value.toList() : value.toOrderedMap())
+})
+```
+
+### toJS()
+
+作用：将一个Immutable数据转换为JS类型的数据
+
+用法：value.toJS()
+
+### is()
+作用：对两个对象进行比较
+
+用法：is(map1,map2)
+
+简介：和js中对象的比较不同，在js中比较两个对象比较的是地址，但是在Immutable中比较的是这个对象hashCode和valueOf，只要两个对象的hashCode相等，值就是相同的，避免了深度遍历，提高了性能
+
+```
+import { Map, is } from 'immutable'
+const map1 = Map({ a: 1, b: 1, c: 1 })
+const map2 = Map({ a: 1, b: 1, c: 1 })
+map1 === map2   //false
+Object.is(map1, map2) // false
+is(map1, map2) // true
+```
+### List() 和 Map()
+作用：用来创建一个新的List/Map对象
+
+用法：
+```
+//List
+Immutable.List(); // 空List
+Immutable.List([1, 2]);
+
+//Map
+Immutable.Map(); // 空Map
+Immutable.Map({ a: '1', b: '2' });
+```
+
+### size
+作用：属性，获取List/Map的长度，等同于ImmutableData.count();
+
+### get() 、 getIn()
+作用：获取数据结构中的数据
+```
+//获取List索引的元素
+ImmutableData.get(0);
+
+// 获取Map对应key的value
+ImmutableData.get('a');
+
+// 获取嵌套数组中的数据
+ImmutableData.getIn([1, 2]);
+
+// 获取嵌套map的数据
+ImmutableData.getIn(['a', 'b']);
+```
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts

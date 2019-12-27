@@ -8,7 +8,6 @@ import '@/style/index.less'; // 引入样式
 
 const { Content } = Layout;
 
-
 export default class Container extends Component{
   
   render() {

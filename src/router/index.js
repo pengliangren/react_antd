@@ -6,6 +6,8 @@ import loadable from '@/utils/loadable'; // 引入封住好的 react-loadable
 
 const Home = loadable(() => import("@/pages/home"))
 
+const Music = loadable(() => import("@/pages/music"))
+
 // const Login = loadable(() => import("@/pages/login"))
 
 const NoMatch = loadable(() => import("@/pages/nomatch"))
@@ -21,6 +23,7 @@ class Router extends Component {
               <Container>
                 <Switch>
                   <Route path="/home" component={Home} />
+                  <Route path="/music" component={Music} />
                   <Route component={NoMatch}/>
                 </Switch>
               </Container>
