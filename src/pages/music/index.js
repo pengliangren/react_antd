@@ -3,8 +3,12 @@ import SearchBar from '@/components/searchBar'
 import { musicKindList, languageKindList, publishCountry } from '@/utils/config';
 import {FormModal} from '@/components/modalForm';
 import { message, Modal, Button } from "antd";
+import ETable from '@/components/ETable'
+import { fetchJSONPByGet } from '@/utils/ajax';
+import { fetchMusicList } from '@/pages/music/store/actions'
+
 // import moment from 'moment';
-// import { connect } from "react-redux";
+import { connect } from "react-redux";
 
 import './index.less';
 
@@ -16,12 +20,44 @@ class Music extends Component {
     this.state = {
       loading: true,
       addModalShow: false,
-      editModalShow: false
+      editModalShow: false,
+      musicList: []
     };
   }
 
   componentDidMount() {
-    console.log(this.filterForm.props.form)
+    // console.log(this.filterForm.props.form)
+    this.getMusicList();
+
+    this.props.getList()
+  }
+
+  // 获取音乐列表
+  getMusicList = () => {
+    fetchJSONPByGet('http://tingapi.ting.baidu.com/v1/restserver/ting')({
+      // 默认是热歌版
+      method: 'baidu.ting.billboard.billList',
+      size: 100,
+      type: 2
+    }).then((data) => {
+      console.log(data)
+      let songArray = []
+      if (data.song_list) {
+        for(let i=0; i< data.song_list.length; i++) {
+          songArray.push({
+            title: data.song_list[i].title,
+            author: data.song_list[i].author,
+            country: data.song_list[i].country,
+            language: data.song_list[i].language,
+            publishtime: data.song_list[i].publishtime,
+          })
+        }
+      }
+      this.setState({
+        musicList: songArray,
+        loading: false
+      })
+    })
   }
 
   // 从 searchBar 获取到的值
@@ -116,6 +152,37 @@ class Music extends Component {
         label: '发行时间段',
         field: 'Rang',
         type: 'RangPicker',
+      }
+    ]
+  }
+
+  // 表格头部
+  tableHeader = () => {
+    return [
+      {
+        dataIndex: 'title',
+        title: '歌曲名',
+        width: 200
+      },
+      {
+        dataIndex: 'author',
+        title: '歌手',
+        width: 200
+      },
+      {
+        dataIndex: 'country',
+        title: '发行国家',
+        width: 200
+      },
+      {
+        dataIndex: 'language',
+        title: '语种',
+        width: 200
+      },
+      {
+        dataIndex: 'publishtime',
+        title: '发行时间',
+        width: 200
       }
     ]
   }
@@ -224,6 +291,10 @@ class Music extends Component {
     ]
   }
 
+  // updateSelectedRows = (rows) => {
+  //   console.log(rows)
+  // }
+
   render() {
     return (
       <div id="music-wrap">
@@ -237,7 +308,30 @@ class Music extends Component {
         <div className="tableBox">
           <Button onClick={this.addSong} className="addButton">添加</Button>
           <div style={{ paddingTop: 43 }}>
-            
+            <ETable
+              // rowSelection="checkbox"
+              // updateSelectedRows = {this.updateSelectedRows}
+              pagination={true}
+              pageSize = {10}
+              data = {this.state.musicList}
+              header = { this.tableHeader()}
+              loading={this.props.loading}
+              action={ row => [
+                {
+                  key: 'edit',
+                  name: '修改',
+                  color: 'blue',
+                  icon: 'edit'
+                },
+                {
+                  key: 'delete',
+                  name: '删除',
+                  color: 'red',
+                  icon: 'delete'
+                }
+              ]}
+              scroll={{ y: 385 }}
+            />
           </div>
         </div>
 
@@ -265,5 +359,22 @@ class Music extends Component {
   }
 }
 
+const mapStateToProps = (state) => {
+  const { music } = state;
+  return {
+    loading: music.loading,
+    name: music.name
+  }
+}
 
-export default Music;
+const mapDispatchToProps = (dispatch) => ({
+    getList(){
+      dispatch(fetchMusicList({
+        method: 'baidu.ting.billboard.billList',
+        size: 100,
+        type: 2
+      }))
+    }
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Music);

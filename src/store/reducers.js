@@ -1,9 +1,9 @@
-// import { combineReducers } from 'redux';
+import { combineReducers } from 'redux';
 
 // 引入redux-immutable 之后，combineReducers 不再从redux导入，而是从redux-immutable导入
 //combineReducers  是为了把所有的reducer 都合并在一起，共享数据内容
 
-import {combineReducers} from 'redux-immutable';
+// import {combineReducers} from 'redux-immutable';
 
 import {reducer as HeaderReducer } from '@/components/header/store';
 import {reducer as musicReducer } from '@/pages/music/store';

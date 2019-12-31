@@ -86,6 +86,21 @@ ImmutableData.getIn([1, 2]);
 // 获取嵌套map的数据
 ImmutableData.getIn(['a', 'b']);
 ```
+## fetch-jsonp 的使用
+### fetch-jsonp  不受跨域限制
+```
+安装  cnpm i fetch-jsonp -S
+
+用法 : 在项目中引入
+import  fetchJsonp  from  fetch-jsonp
+
+fetchJsonp("请求的url地址")
+.then(response => res.json() )
+.then(data => console.log(data))
+  //注意： 第一个.then 中获取到的不是最终数据，而是一个中间的数据流对象；
+  // 注意： 第一个  .then 中获取到的数据， 是一个 Response 类型对象；
+  // 注意： 第二个 .then 中，获取到的才是真正的 数据；
+```
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
