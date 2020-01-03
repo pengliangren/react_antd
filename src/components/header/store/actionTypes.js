@@ -1,0 +1,3 @@
+
+export const CHANGE_MENU_NAME = 'CHANGE_MENU_NAME';
+export const CHANGE_COLLAPSED = 'CHANGE_COLLAPSED';

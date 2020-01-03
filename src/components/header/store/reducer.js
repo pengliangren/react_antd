@@ -1,13 +1,27 @@
-import { fromJS } from 'immutable';
+// import { fromJS } from 'immutable';
+import { handleActions } from  'redux-actions';
 import * as type from './actionTypes';
 
-const defaultStatus = {}
-
-// 导出的是一个纯函数
-export default (state = defaultStatus, action) => {
-  switch (action.type) {
-    
-    default:
-      return state
-  }
+const defaultState = {
+  menuName: '',
+  mode: 'inline',
+  collapsed: false
 }
+
+const headerReducer = handleActions({
+  [type.CHANGE_MENU_NAME]: (state, action) => {
+    return {
+      ...state,
+      menuName: action.payload.menuName
+    }
+  },
+  [type.CHANGE_COLLAPSED]: (state, action) => {
+    return {
+      ...state,
+      collapsed: !state.collapsed,
+      mode: state.collapsed ? 'inline' : 'vertical'
+    }
+  }
+}, defaultState)
+
+export default headerReducer;

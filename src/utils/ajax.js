@@ -10,21 +10,20 @@ import fetchJsonp from 'fetch-jsonp'; // 可以进行跨域jsonp 请求
 */
 
 export function fetchJSONP(url, params) {
-  return new Promise((resolve, reject) => {
-    fetchJsonp(url, {
-      ...params
-    }).then(response => {
-      resolve(response.json())
-    }).then(json => {
-      console.log(json)
-    }).catch(err => {
-      console.log(err)
-      reject(err)
-    })
+
+  return fetchJsonp(url, {
+    ...params
   })
-  // return fetchJsonp(url, {
-  //   ...params
-  // })
+}
+
+// 检测相应状态
+function checkStatus(response) {
+  if ((response.status >= 100 && response.status < 300) || response.status === 500 || response.json) {
+    return response
+  }
+  const error = new Error(response.statusText)
+  error.response = response
+  throw(error)
 }
 
 /**
@@ -64,7 +63,17 @@ export const fetchJSONPByGet = url => query => {
   }
   // substr(start, length)
   getUrl = url + (query ? getQuery.substr(0, getQuery.length -1 ) : '') // ?a=1&b=2
-  return fetchJSONP(getUrl, params)
+
+  return new Promise((resolve, reject) => {
+    fetchJSONP(getUrl, params)
+    .then(checkStatus)
+    .then(response => {
+      resolve(response.json())
+    })
+    .then(err => {
+      reject(err)
+    })
+  })
 }
 
 export const fetchJSONByGet = url => query => {
@@ -79,5 +88,15 @@ export const fetchJSONByGet = url => query => {
     })
   }
   getUrl = url + (query ? getQuery.substr(0, getQuery.length - 1) : '')
-  return fetch(getUrl, params)
+
+  return new Promise((resolve, reject) => {
+    fetchJSONP(getUrl, params)
+    .then(checkStatus)
+    .then(response => { 
+      resolve(response.json())
+    })
+    .then(err => {
+      reject(new Error(err))
+    })
+  })
 }

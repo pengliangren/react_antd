@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import {Layout, Icon, Menu} from 'antd';
 import {Link} from 'react-router-dom';
 import * as screenfull from 'screenfull';
+import { connect } from 'react-redux';
+import { changeCollapsed } from '@/components/header/store/actions';
 
 import './index.less';
 
@@ -40,6 +42,9 @@ class MainHeader extends Component {
           type={this.props.collapsed ? 'menu-unfold' : 'menu-fold'}
           onClick={this.props.toggle}
         />
+        <div className="menu-name">
+          {this.props.menuName || '首页'}
+        </div>
         <Menu mode="horizontal" className="logOut">
           <SubMenu
             title = {
@@ -60,5 +65,21 @@ class MainHeader extends Component {
      );
   }
 }
- 
-export default MainHeader;
+
+const mapStateToProps = (state) => {
+  const {header} = state;
+  return {
+    menuName: header.menuName,
+    collapsed: header.collapsed
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return ({
+    toggle() {
+      dispatch(changeCollapsed())
+    }
+  })
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(MainHeader);

@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import { Menu, Icon, Switch, Layout} from 'antd';
-import { NavLink } from 'react-router-dom'
-import allMenu from '@/utils/menuConfig'
+import { NavLink } from 'react-router-dom';
+import allMenu from '@/utils/menuConfig';
+import {connect} from 'react-redux';
+import { changeMenuName, changeCollapsed } from '@/components/header/store/actions';
+import {withRouter} from 'react-router-dom'
 
 import './index.less';
 
@@ -11,18 +14,38 @@ const { Sider } = Layout;
 class NavLeft extends Component {
   constructor(props) {
     super(props);
-    this.state = { 
-      currentKey: '',
-      mode: 'inline',
+    this.state = {
+      selectedKey:'',
+      // mode: 'inline',
       theme: 'dark',
-      collapsed: false
+      // collapsed: false
     }
   }
 
   UNSAFE_componentWillMount() {
+
     // 把 # 或者 以 ？后面跟着任意字符 结尾的 全局匹配，替换为空， 防止 #/city?a=1&b=3
-    let pathname = window.location.hash;
-    console.log(pathname)
+    // let selectedKey = window.location.hash.replace(/#|\?.*$/g, '').split('/')[1];
+    // console.log(selectedKey)
+    // this.setState({
+    //   selectedKey
+    // })
+
+    // 注意这里想要 获取  this.props.localtion   需要 withRouter 把history、location、match 传到 this.props上
+    let selectedKey = this.props.location.pathname.replace(/#|\?.*$/g, '').split('/')[1]
+    this.setState({
+      selectedKey
+    })
+  }
+
+  // 子菜单点击
+  handleClick = ({item, key}) => {
+    console.log(item.props.title, key)
+    this.setState({
+      selectedKey: key
+    })
+    this.props.changeMenu(item.props.title)
+
   }
 
   // 菜单渲染，箭头函数，绑定 this 指向
@@ -41,9 +64,10 @@ class NavLeft extends Component {
           >
             {/* {this.renderMenu(subMenu.children)} */}
             {
+              // 这里因为二级是没有icon 的，所以如果以上面的 方法写的话会报错，找不到icon的 type
               subMenu.children.map((menu) => {
                 return (
-                  <Menu.Item key={menu.url}>
+                  <Menu.Item key={menu.url} title={menu.name}>
                     <NavLink to={`/${menu.url}`}>{menu.name}</NavLink>
                   </Menu.Item>
                 )
@@ -75,9 +99,23 @@ class NavLeft extends Component {
   };
 
   render() { 
-    const { theme } = this.state;
+    const { theme, selectedKey } = this.state;
+    
+    // 初始展开的 SubMenu 菜单项 key 数组
+    let openKey = '';
+    for (const menuObj of allMenu) {
+      if (menuObj.children) {
+        for (const menuList of menuObj.children) {
+          if (menuList.url === selectedKey) {
+            openKey = menuList.url
+            break
+          }
+        }
+      }
+    }
+
     return (
-      <Sider className="navLeft-container" collapsible collapsed={this.state.collapsed} onCollapse={this.onCollapse}>
+      <Sider className="navLeft-container" collapsible collapsed={this.props.collapsed} onCollapse={this.props.toggle}>
         { 
           theme === 'light' ? (
             <a
@@ -103,10 +141,10 @@ class NavLeft extends Component {
           <span className="author white">仁兄</span>
         )}
         <Menu className="menu"
-          defaultSelectedKeys={['1']}
-          defaultOpenKeys={['sub2']}
-          // selectedKeys = {[selectedKeys]}
-          mode= {this.state.mode}
+          defaultOpenKeys={[openKey]}
+          selectedKeys = {[selectedKey]}
+          onClick={this.handleClick}
+          mode= {this.props.mode}
           theme= {this.state.theme}
         >
           {this.renderMenu(allMenu)}
@@ -123,5 +161,24 @@ class NavLeft extends Component {
      );
   }
 }
+
+const mapStateToProps = (state) => {
+  const {header} = state;
+  return {
+    collapsed: header.collapsed,
+    mode: header.mode
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return ({
+    toggle() {
+      dispatch(changeCollapsed())
+    },
+    changeMenu(menuname) {
+      dispatch(changeMenuName(menuname))
+    }
+  })
+}
  
-export default NavLeft;
+export default connect(mapStateToProps,mapDispatchToProps)(withRouter(NavLeft));

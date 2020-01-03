@@ -175,11 +175,13 @@ export default Form.create({
   name: 'searchBar_controls',
   //  这个只要是修改了其中某一项，都会把这个整个列表的重新返回，上一级组件可以调用 onChange 方法进行获取
   onFieldsChange(props, changedFields) {
-    props.onChange(changedFields)
+    // props.onChange(changedFields)
+    // console.log(changedFields)
   },
   
   // 这个任一修改的时候会把修改的那一项返回结果
-  onValuesChange: (_, value) => {
-    // console.log(value);
+  onValuesChange: (props, value, allValues) => {
+    // console.log(allValues)
+    props.onChange(value)
   }
 })(SearchBar);

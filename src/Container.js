@@ -9,7 +9,7 @@ import '@/style/index.less'; // 引入样式
 const { Content } = Layout;
 
 export default class Container extends Component{
-  
+ 
   render() {
     return (
       <Layout className="containAll" style={{ minHeight: '100vh' }}>

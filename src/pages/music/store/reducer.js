@@ -14,6 +14,14 @@ const musicReducer = handleActions(
         ...state,
         loading: action.payload.isloading,
       }
+    },
+    [type.RECEIVE_MUSIC_LIST]: (state, action) => {
+      const payload = action.payload;
+      return {
+        ...state,
+        loading: false,
+        data: payload.res.song_list
+      }
     }
   },
   defaultStatus
@@ -21,6 +29,7 @@ const musicReducer = handleActions(
 
 export default musicReducer;
 
+// 使用 redux-actions 之后， 可以不用switch case 这样处理， 使用 handleActions 这个方法同时处理多个reducer
 // 导出的是一个纯函数
 // export default (state = defaultStatus, action) => {
 //   switch (action.type) {

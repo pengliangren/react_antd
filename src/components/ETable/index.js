@@ -74,7 +74,8 @@ class ETable extends PureComponent {
                     // 阻止事件冒泡
                     e.stopPropagation();
                     e.nativeEvent.stopImmediatePropagation();
-                    if ('onClick' in this.props) {
+                    // 如果父组件通过this.props 传递一个叫 onCtrlClick 的方法， 这调用这个方法把当前的行 和 key 传回去
+                    if ('onCtrlClick' in this.props) {
                       this.props.onCtrlClick(key, row)
                     }
                   }}
@@ -101,6 +102,7 @@ class ETable extends PureComponent {
     this.setState({
       currentPage
     })
+    // 如果父组件通过this.props 传递一个叫 onChange 的方法， 这调用这个方法把 当前的页码传回去
     // 这里的onChange 是表示父组件传过来的方法，可以实现点击页码加载数据的功能
     if ('onChange' in this.props) {
       this.props.onChange(currentPage)
@@ -171,7 +173,7 @@ class ETable extends PureComponent {
       selectedRowKeys,
       selectedRows
     });
-    
+
     // 选择发生改变的时候也要传回去
     if (this.props.rowSelection === 'checkbox') {
       this.props.updateSelectedRows(selectedRows)
@@ -226,6 +228,7 @@ class ETable extends PureComponent {
               }
             }
           }
+          footer = {this.props.footer}
         />
       </div> 
       
