@@ -3,6 +3,27 @@
   react-loadable 可以实现代码分割， 减少首屏加载时间，打包之后分成多个代码块chunks
 - screenfull 可以实现全屏展示
 
+## 富文本编辑器
+### 安装插件 `yarn add react-draft-wysiwyg`;
+### 配合使用的插件有
+`yarn add draft-js`
+
+`yarn add draftjs-to-html`
+
+`yarn add html-to-draftjs`
+
+`yarn add html-to-markdown`
+
+## 使用photoswipe 做画廊
+`yarn add photoswipe`
+```
+import PhotoSwipe from 'photoswipe'
+import PhotoswipeUIDefault from 'photoswipe/dist/photoswipe-ui-default'
+import 'photoswipe/dist/photoswipe.css'
+import 'photoswipe/dist/default-skin/default-skin.css'
+
+```
+
 ## immutable.js 的使用
 
 ### Immutable.js 的几种数据类型

@@ -86,8 +86,6 @@ class Music extends Component {
 
   // 表单任一变化的返回值
   handleFormChange = (params) => {
-    // console.log('change' + JSON.stringify(value))
-
     // 这段代码模拟 筛选作用, 通常是需要重新调用接口的
     // 注意， 这里只能筛选到 歌曲类型， 是因为其他接口不对
     console.log(params)
@@ -152,6 +150,17 @@ class Music extends Component {
       this.setState({
         editModalShow: true,
         item: row
+      })
+    } else if (actionKey === 'delete') {
+      confirm({
+        title: '提示',
+        content: '确定删除吗？',
+        onOk: () => {
+          message.success('删除成功')
+        },
+        onCancel: () => {
+
+        }
       })
     }
   }

@@ -11,7 +11,7 @@ export const receiveMusicList = createAction(type.RECEIVE_MUSIC_LIST);
 
 // 封装 获取ajax 的action
 // 注意， 这个 是没有 type 的， 只是同时去处理多个 action， 进行异步操作，而不需要单独的 reducer 去处理
-const createAjaxAction = (api, startAction, endAction) => (data) => dispatch => {
+export const createAjaxAction = (api, startAction, endAction) => (data) => dispatch => {
   // 请求数据的时候，把loading 开启
   dispatch(startAction(true))
   api(data).then((response) => {

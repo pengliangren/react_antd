@@ -32,7 +32,7 @@ class MainFooter extends Component {
   render() {
     const {timer} = this.state;
     return ( 
-      <Footer className="footer">
+      <Footer className="footer animated bounceInLeft">
         <div className="text">
           <div>
             <span>© 2017-2018 仁兄，仁者无敌</span>

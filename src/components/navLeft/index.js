@@ -18,6 +18,8 @@ class NavLeft extends Component {
       selectedKey:'',
       // mode: 'inline',
       theme: 'dark',
+      openKeys: [],  // 初始展开的项
+      rootSubmenuKeys: [] // 所有submenu 的keys
       // collapsed: false
     }
   }
@@ -32,20 +34,66 @@ class NavLeft extends Component {
     // })
 
     // 注意这里想要 获取  this.props.localtion   需要 withRouter 把history、location、match 传到 this.props上
-    let selectedKey = this.props.location.pathname.replace(/#|\?.*$/g, '').split('/')[1]
+    let selectedKey = this.props.history.location.pathname.replace(/#|\?.*$/g, '').split('/')[1]
+    // this.setState({
+    //   selectedKey
+    // })
+
+    let openKey = '';
+    let subMenuKeys = [];
+    let openKeys = []
+    for (const menuObj of allMenu) {
+      if (menuObj.children) {
+        // 如果有二次列表，
+        subMenuKeys.push(menuObj.url)
+        for (const menuList of menuObj.children) {
+          if (menuList.url === selectedKey) {
+            openKey = menuObj.url // 注意  这里默认展开的项， 是当前选中的url的父级的url
+            openKeys.push(openKey)
+            break
+          }
+        }
+      }
+    }
     this.setState({
+      rootSubmenuKeys: subMenuKeys,
+      openKeys,
       selectedKey
     })
   }
 
   // 子菜单点击
   handleClick = ({item, key}) => {
-    console.log(item.props.title, key)
+    // console.log(item.props.title, key)
     this.setState({
       selectedKey: key
     })
     this.props.changeMenu(item.props.title)
+  }
 
+  // 默认只展开当前父级菜单，点击菜单，收起其他展开的所有菜单，保持菜单聚焦简洁。
+  openChange = (openKey) => {
+    const {openKeys, rootSubmenuKeys} = this.state;
+    // 这里的代码跟下面的代码是一样的，容易理解些
+    // function findKey(key) {
+    //   return openKeys.indexOf(key) === -1
+    // }
+    // const latestOpenKey = openKey.find(findKey)
+
+    // 表示从 openKey 数组中查找， 满足条件的第一个元素，  
+    const latestOpenKey = openKey.find(key => openKeys.indexOf(key) === -1);
+    // console.log(openKeys)
+    // console.log(openKey)
+    // console.log(latestOpenKey)
+    if (rootSubmenuKeys.indexOf(latestOpenKey) === -1) {
+      this.setState({
+        openKeys: openKey
+      })
+    } else {
+      this.setState({
+        openKeys: latestOpenKey ? [latestOpenKey] : []
+      })
+    }
   }
 
   // 菜单渲染，箭头函数，绑定 this 指向
@@ -94,25 +142,25 @@ class NavLeft extends Component {
   }
 
   onCollapse = collapsed => {
-    console.log(collapsed);
+    // console.log(collapsed);
     this.setState({ collapsed });
   };
 
-  render() { 
-    const { theme, selectedKey } = this.state;
+  render() {
+    const { theme, selectedKey, openKeys } = this.state;
     
-    // 初始展开的 SubMenu 菜单项 key 数组
-    let openKey = '';
-    for (const menuObj of allMenu) {
-      if (menuObj.children) {
-        for (const menuList of menuObj.children) {
-          if (menuList.url === selectedKey) {
-            openKey = menuList.url
-            break
-          }
-        }
-      }
-    }
+    // // 初始展开的 SubMenu 菜单项 key 数组
+    // let openKey = '';
+    // for (const menuObj of allMenu) {
+    //   if (menuObj.children) {
+    //     for (const menuList of menuObj.children) {
+    //       if (menuList.url === selectedKey) {
+    //         openKey = menuObj.url // 注意  这里默认展开的项， 是当前选中的url的父级的url
+    //         break
+    //       }
+    //     }
+    //   }
+    // }
 
     return (
       <Sider className="navLeft-container" collapsible collapsed={this.props.collapsed} onCollapse={this.props.toggle}>
@@ -141,8 +189,10 @@ class NavLeft extends Component {
           <span className="author white">仁兄</span>
         )}
         <Menu className="menu"
-          defaultOpenKeys={[openKey]}
+          defaultOpenKeys={openKeys}
+          openKeys = {openKeys}
           selectedKeys = {[selectedKey]}
+          onOpenChange = {this.openChange}
           onClick={this.handleClick}
           mode= {this.props.mode}
           theme= {this.state.theme}
