@@ -30,6 +30,8 @@ const todo = loadable(() => import("@/pages/mock/todo"))
 
 const Follow = loadable(() => import("@/pages/follow"))
 
+const qqLoading = loadable(() => import("@/pages/loading/qqLoading"))
+
 const NoMatch = loadable(() => import("@/pages/nomatch"))
 
 class Router extends Component {
@@ -55,6 +57,7 @@ class Router extends Component {
                   <Route path="/reform" component={reform} />
                   <Route path="/todo" component={todo} />
                   <Route path="/follow" component={Follow} />
+                  <Route path="/qqLoading" component={qqLoading} />
                   { window.location.hash === '#/' ? <Redirect to="/login"/> : ''}
                   <Route component={NoMatch}/>
                 </Switch>

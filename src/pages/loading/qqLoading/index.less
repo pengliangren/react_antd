@@ -1,0 +1,51 @@
+.loading-container{
+  font-size: 16px;
+}
+.logo-wrap{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 300px;
+}
+
+.ant-card-body{
+  background-image: linear-gradient(60deg, #2b61a2, #1d3266);
+  position: relative;
+}
+
+.logo{
+  transform:translate3d(38px,1px,0);
+}
+.stoken{
+  transform:translate3d(6px,30px,0);
+}
+
+#loadNum {
+  position: absolute;
+  left: 50%;
+  top: 60%;
+  font-size: 40px;
+  color: #ffffff;
+  transform: translateX(-50%);
+}
+
+.circle{
+  transform:translate3d(7px,25px,0);
+  animation:circleShow 3s linear infinite;
+}
+
+@keyframes circleShow {
+  0% {visibility: visible;}
+  62.4%{visibility: visible;}
+  62.5%{visibility: hidden;}
+  87.9% {visibility: hidden;}
+  88% {visibility: visible;}
+  100%{visibility: visible;}
+}
+@keyframes height {
+  0% {transform:translateY(-100%);}
+  100%{transform:translateY(0%);}
+}
+.anited{
+  animation:height 9s linear ;
+}

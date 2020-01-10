@@ -46,6 +46,14 @@ const allMenu = [
     name: '项目地址',
     url: 'follow',
     icon: 'heart-o'
+  },
+  {
+    name: 'loading SVG 动画',
+    url: 'loading',
+    icon: 'loading',
+    children: [
+      { name: 'QQ浏览器Logo动画', url: 'qqLoading' }
+    ]
   }
 ]
 
